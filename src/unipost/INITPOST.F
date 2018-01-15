@@ -67,7 +67,7 @@
               QVl1,REFC_10CM,REF1KM_10CM,REF4KM_10CM,                              &
               SWRADmean,U10mean,V10mean,SPDUV10mean,SWNORMmean,SNFDEN,SNDEPAC,     &
               hbotd,hbots,UP_HELI_MIN, AFWA_SNOWFALL_HRLY, HAILCAST_DIAM_STD,      &
-              HAILCAST_DIAM_MEAN,HAILCAST_DIAM_MAX
+              HAILCAST_DIAM_MEAN,HAILCAST_DIAM_MAX, HAIL_MAXK1, HAIL_MAX2D
       use soil, only: smc, sh2o, stc, sldpth, sllevel
       use masks, only: lmv, lmh, vtm, sice, gdlat, gdlon, sm, dx, dy, htm
       use ctlblk_mod, only: jsta_2l, jend_2u, filename, datahandle, datestr,       &
@@ -1597,6 +1597,27 @@ endif  ! 1==2
         end do
        end do
 ! CRA
+!G.Thompson Hail diameter output
+      VarName='HAIL_MAXK1'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            HAIL_MAXK1 ( i, j ) = dummy ( i, j )
+        end do
+       end do
+!       print*,'HAIL_MAXK1 at ',ii,jj,' = ',HAIL_MAXK1(ii,jj)
+
+      VarName='HAIL_MAX2D'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            HAIL_MAX2D ( i, j ) = dummy ( i, j )
+        end do
+       end do
+!       print*,'HAIL_MAX2D at ',ii,jj,' = ',HAIL_MAX2D(ii,jj)
+!End G.Thompson Hail diameter output
 ! get 2-d variables
 
       VarName='U10'
