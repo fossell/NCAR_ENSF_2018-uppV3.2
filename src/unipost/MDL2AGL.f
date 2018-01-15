@@ -208,7 +208,7 @@
                FACT=(ZDUM-ZMID(I,J,LL))/(ZMID(I,J,LL)-ZMID(I,J,LL-1))
 !	  
 ! KRF: Use arw/nmm output if thompson
-        if (imp_physics==8) then
+        if (imp_physics==8 .or. imp_physics==28) then
            DBZ1(I,J)=REF_10CM(I,J,LL)+(REF_10CM(I,J,LL)-REF_10CM(I,J,LL-1))*FACT
         else
            DBZ1(I,J)=DBZ(I,J,LL)+(DBZ(I,J,LL)-DBZ(I,J,LL-1))*FACT
