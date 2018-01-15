@@ -66,7 +66,7 @@
               ivgtyp, isltyp, islope, pblh, pblhgust, f,                           &
               QVl1,REFC_10CM,REF1KM_10CM,REF4KM_10CM,                              &
               SWRADmean,U10mean,V10mean,SPDUV10mean,SWNORMmean,SNFDEN,SNDEPAC,     &
-              hbotd,hbots,UP_HELI_MIN
+              hbotd,hbots,UP_HELI_MIN, AFWA_SNOWFALL_HRLY
       use soil, only: smc, sh2o, stc, sldpth, sllevel
       use masks, only: lmv, lmh, vtm, sice, gdlat, gdlon, sm, dx, dy, htm
       use ctlblk_mod, only: jsta_2l, jend_2u, filename, datahandle, datestr,       &
@@ -2034,6 +2034,17 @@ endif  ! 1==2
             snow_bucket ( i, j ) = dummy ( i, j )
         end do
        end do
+
+      write(6,*) 'getting AFWA_SNOWFALL_HRLY, [mm] '
+      VarName='AFWA_SNOWFALL_HRLY'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            AFWA_SNOWFALL_HRLY ( i, j ) = dummy ( i, j )
+        end do
+       end do
+
 
 !-- GRAUP_bucket  is "ACCUMULATED GRID SCALE GRAUPEL OVER BUCKET_DT PERIODS OF TIME"
 
