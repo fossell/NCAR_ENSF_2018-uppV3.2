@@ -47,7 +47,7 @@
       use vrbls2d, only: refd_max, up_heli_max, up_heli_max16, grpl_max,      &
                          ltg1_max, ltg2_max, ltg3_max, up_heli, up_heli16,    &
                          nci_ltg, nca_ltg, nci_wq, nca_wq, nci_refd, nca_refd,&
-                         u10, v10, u10h, v10h
+                         u10, v10, u10h, v10h, up_heli_min
       use masks,   only: lmh, lmv
       use params_mod, only: dbzmin, small, eps, rd
       use ctlblk_mod, only: spval, lm, modelname, grib, cfld, fld_info, datapd,&
@@ -427,6 +427,43 @@
                datapd(1:im,1:jend-jsta+1,cfld) = GRID1(1:im,jsta:jend)
              endif
           END IF
+
+!---  Min Updraft Helicity (anticyclonic)
+          IF((IGET(931).GT.0) )THEN
+             DO J=JSTA,JEND
+             DO I=1,IM
+               GRID1(I,J)=UP_HELI_MIN(I,J)
+             ENDDO
+             ENDDO
+             ID(1:25)=0
+             ID(02)=129
+!             ID(11) = NINT(ZAGL(2))
+             ID(9) = 106
+             ID(10) = 50
+             ID(11) = 20
+             ID(20) = 2
+             ID(19) = IFHR
+             IF (IFHR.EQ.0) THEN
+               ID(18) = 0
+             ELSE
+               ID(18) = IFHR - 1
+             ENDIF
+             if(grib=='grib1') then
+               CALL GRIBIT(IGET(931),LP,GRID1,IM,JM)
+             elseif(grib=='grib2') then
+               cfld=cfld+1
+               fld_info(cfld)%ifld=IAVBLFLD(IGET(931))
+               fld_info(cfld)%lvl=LVLSXML(LP,IGET(931))
+               fld_info(cfld)%tinvstat=1
+               if (IFHR .gt. 0) then
+                 fld_info(cfld)%ntrange=1
+               else
+                 fld_info(cfld)%ntrange=0
+               endif
+               datapd(1:im,1:jend-jsta+1,cfld)=GRID1(1:im,jsta:jend)
+             endif
+          END IF
+
 
 !---  Max Updraft Helicity 1-6 km
           IF((IGET(700).GT.0) )THEN

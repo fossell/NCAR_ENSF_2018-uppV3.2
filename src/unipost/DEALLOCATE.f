@@ -364,6 +364,7 @@
       deallocate(fprate_max)
       deallocate(up_heli_max)
       deallocate(up_heli_max16)
+      deallocate(up_heli_min)
       deallocate(grpl_max)
       deallocate(up_heli)
       deallocate(up_heli16)

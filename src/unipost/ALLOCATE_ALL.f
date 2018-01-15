@@ -173,6 +173,7 @@
       allocate(fprate_max(im,jsta_2l:jend_2u))
       allocate(up_heli_max(im,jsta_2l:jend_2u))
       allocate(up_heli_max16(im,jsta_2l:jend_2u))
+      allocate(up_heli_min(im,jsta_2l:jend_2u))
       allocate(grpl_max(im,jsta_2l:jend_2u))
       allocate(up_heli(im,jsta_2l:jend_2u))
       allocate(up_heli16(im,jsta_2l:jend_2u))
