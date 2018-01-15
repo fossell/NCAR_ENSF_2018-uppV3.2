@@ -3444,9 +3444,60 @@
                   enddo
                 enddo
                endif
-
+             ENDIF
            ENDIF
-         ENDIF
+! RAS
+         IF ( (IGET(928).GT.0).OR.(IGET(929).GT.0) ) THEN
+            CALL CALLCL(P1D,T1D,Q1D,EGRID1,EGRID2)
+
+            IF (IGET(928).GT.0) THEN
+!$omp parallel do private(i,j)
+               DO J=JSTA,JEND
+                 DO I=1,IM
+                   GRID1(I,J) = EGRID2(I,J)
+                 ENDDO
+               ENDDO
+               ID(1:25) = 0
+               if(grib=='grib1') then
+                CALL GRIBIT(IGET(928),ILVL, GRID1,IM,JM)
+               elseif(grib=='grib2') then
+                cfld=cfld+1
+                fld_info(cfld)%ifld=IAVBLFLD(IGET(928))
+!$omp parallel do private(i,j,jj)
+                do j=1,jend-jsta+1
+                  jj = jsta+j-1
+                  do i=1,im
+                    datapd(i,j,cfld) = GRID1(i,jj)
+                  enddo
+                enddo
+               endif
+            ENDIF
+
+            IF (IGET(929).GT.0) THEN
+!$omp parallel do private(i,j)
+               DO J=JSTA,JEND
+                 DO I=1,IM
+                   GRID1(I,J) = EGRID1(I,J)
+                 ENDDO
+               ENDDO
+               ID(1:25) = 0
+               if(grib=='grib1') then
+                CALL GRIBIT(IGET(929),ILVL, GRID1,IM,JM)
+               elseif(grib=='grib2') then
+                cfld=cfld+1
+                fld_info(cfld)%ifld=IAVBLFLD(IGET(929))
+!$omp parallel do private(i,j,jj)
+                do j=1,jend-jsta+1
+                  jj = jsta+j-1
+                  do i=1,im
+                    datapd(i,j,cfld) = GRID1(i,jj)
+                  enddo
+                enddo
+               endif
+            ENDIF
+
+         ENDIF  ! end if field 1/2 true
+
               
 !        MIXED LAYER LIFTING CONDENSATION PRESSURE AND HEIGHT.
 !        EGRID1 IS LCL PRESSURE.  EGRID2 IS LCL HEIGHT.
