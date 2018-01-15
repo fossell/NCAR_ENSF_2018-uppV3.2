@@ -486,5 +486,8 @@
       allocate(acswdnt(im,jsta_2l:jend_2u))
 
       allocate(AFWA_SNOWFALL_HRLY(im,jsta_2l:jend_2u))
+      allocate(HAILCAST_DIAM_MEAN(im,jsta_2l:jend_2u))
+      allocate(HAILCAST_DIAM_STD(im,jsta_2l:jend_2u))
+      allocate(HAILCAST_DIAM_MAX(im,jsta_2l:jend_2u))
 ! 
       end

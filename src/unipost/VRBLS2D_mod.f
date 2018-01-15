@@ -53,6 +53,10 @@
       ,TAOD5502D(:,:),AERASY2D(:,:),AERSSA2D(:,:)                            &
 ! afwa hourly snow
       ,AFWA_SNOWFALL_HRLY(:,:) &
+! afwa hailcast
+      ,HAILCAST_DIAM_STD(:,:) &
+      ,HAILCAST_DIAM_MEAN(:,:) &
+      ,HAILCAST_DIAM_MAX(:,:) &
 ! add new fields for GFS
       ,SFCUX(:,:),SFCVX(:,:),AVGALBEDO(:,:),AVGCPRATE(:,:)                   &
       ,AVGPREC(:,:),PTOP(:,:),PBOT(:,:),AVGCFRACH(:,:)                       &

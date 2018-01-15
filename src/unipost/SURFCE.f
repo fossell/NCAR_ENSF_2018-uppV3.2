@@ -82,7 +82,8 @@
                          spduv10mean,swradmean,swnormmean,prate_max,fprate_max &
                          ,fieldcapa,edir,ecan,etrans,esnow,U10mean,V10mean,   &
                          avgedir,avgecan,avgetrans,avgesnow,acgraup,acfrain,  &
-                         acond,maxqshltr,minqshltr,avgpotevp, AFWA_SNOWFALL_HRLY
+                         acond,maxqshltr,minqshltr,avgpotevp, AFWA_SNOWFALL_HRLY,&
+                         HAILCAST_DIAM_MEAN,HAILCAST_DIAM_STD, HAILCAST_DIAM_MAX
       use soil,    only: stc, sllevel, sldpth, smc, sh2o
       use masks,   only: lmh, sm, sice, htm, gdlat, gdlon
       use physcons,only: CON_EPS, CON_EPSM1
@@ -4773,6 +4774,65 @@
         if (allocated(doms))  deallocate(doms)
         if (allocated(domzr)) deallocate(domzr)
         if (allocated(domip)) deallocate(domip)
+
+! AFWA HAILCAST
+
+      IF ( IGET(926).GT.0 ) THEN
+            GRID1=SPVAL
+            DO J=JSTA,JEND
+            DO I=1,IM
+             GRID1(I,J)=HAILCAST_DIAM_MEAN(I,J)
+            ENDDO
+            ENDDO
+         ID(1:25) = 0
+         ID(02)=133    ! Parameter Table 133
+         If(grib=='grib1') then
+          CALL GRIBIT(IGET(926),LVLS(1,IGET(926)),GRID1,IM,JM)
+         elseif(grib=='grib2') then
+          cfld=cfld+1
+          fld_info(cfld)%ifld=IAVBLFLD(IGET(926))
+          datapd(1:im,1:jend-jsta+1,cfld)=GRID1(1:im,jsta:jend)
+         endif
+      ENDIF
+
+      IF ( IGET(927).GT.0 ) THEN
+            GRID1=SPVAL
+            DO J=JSTA,JEND
+            DO I=1,IM
+             GRID1(I,J)=HAILCAST_DIAM_STD(I,J)
+            ENDDO
+            ENDDO
+         ID(1:25) = 0
+         ID(02)=133    ! Parameter Table 133
+         If(grib=='grib1') then
+          CALL GRIBIT(IGET(927),LVLS(1,IGET(927)),GRID1,IM,JM)
+         elseif(grib=='grib2') then
+          cfld=cfld+1
+          fld_info(cfld)%ifld=IAVBLFLD(IGET(927))
+          datapd(1:im,1:jend-jsta+1,cfld)=GRID1(1:im,jsta:jend)
+         endif
+      ENDIF
+
+      IF ( IGET(930).GT.0 ) THEN
+            GRID1=SPVAL
+            DO J=JSTA,JEND
+            DO I=1,IM
+             GRID1(I,J)=HAILCAST_DIAM_MAX(I,J)
+            ENDDO
+            ENDDO
+         ID(1:25) = 0
+         ID(02)=133    ! Parameter Table 133
+         If(grib=='grib1') then
+          CALL GRIBIT(IGET(930),LVLS(1,IGET(930)),GRID1,IM,JM)
+         elseif(grib=='grib2') then
+          cfld=cfld+1
+          fld_info(cfld)%ifld=IAVBLFLD(IGET(930))
+          datapd(1:im,1:jend-jsta+1,cfld)=GRID1(1:im,jsta:jend)
+         endif
+      ENDIF
+! end AFWA Hailcast
+
+
 !
 !
 !***  BLOCK 5.  SURFACE EXCHANGE FIELDS.
