@@ -76,7 +76,7 @@
               ocsmass25, occmass25, bcsmass, bccmass, bcsmass25, bccmass25,            &
               sssmass, sscmass, sssmass25, sscmass25, ducmass25, afwa_snowfall_hrly,   &
               hailcast_diam_std, hailcast_diam_mean, hailcast_diam_max,  hail_maxk1,   &
-              hail_max2d
+              hail_max2d, afwa_rain_hrly, afwa_ice_hrly, afwa_fzra_hrly
       use soil, only:  smc, stc, sh2o, sldpth, rtdpth, sllevel
       use masks, only: htm, vtm, hbm2, sm, sice, lmh, gdlat, gdlon, dx, dy, lmv
       use ctlblk_mod, only: me, num_procs, jm, jsta, jend, jsta_m, jsta_m2,           &

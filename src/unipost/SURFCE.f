@@ -84,7 +84,8 @@
                          avgedir,avgecan,avgetrans,avgesnow,acgraup,acfrain,  &
                          acond,maxqshltr,minqshltr,avgpotevp, AFWA_SNOWFALL_HRLY,&
                          HAILCAST_DIAM_MEAN,HAILCAST_DIAM_STD, HAILCAST_DIAM_MAX,&
-                         HAIL_MAXK1, HAIL_MAX2D
+                         HAIL_MAXK1, HAIL_MAX2D, AFWA_RAIN_HRLY, AFWA_ICE_HRLY,&
+                         AFWA_FZRA_HRLY
       use soil,    only: stc, sllevel, sldpth, smc, sh2o
       use masks,   only: lmh, sm, sice, htm, gdlat, gdlon
       use physcons,only: CON_EPS, CON_EPSM1
@@ -2732,6 +2733,161 @@
               datapd(1:im,1:jend-jsta+1,cfld)=GRID1(1:im,jsta:jend)
             endif
          ENDIF
+
+! KRF: Add AFWA_RAIN_HRLY from ncar ensemble wrf output.
+        IF (IGET(932).GT.0.) THEN
+            DO J=JSTA,JEND
+            DO I=1,IM
+              IF (IFHR .EQ. 0) THEN
+                GRID1(I,J)=0.0
+              ELSE
+                 GRID1(I,J)=AFWA_RAIN_HRLY(I,J)
+             ENDIF
+            ENDDO
+            ENDDO
+            ID(1:25) = 0
+            ITPREC     = NINT(TPREC)
+!mp
+            if (ITPREC .ne. 0) then
+             IFINCR     = MOD(IFHR,ITPREC)
+             IF(IFMIN .GE. 1)IFINCR= MOD(IFHR*60+IFMIN,ITPREC*60)
+            else
+             IFINCR     = 0
+            endif
+!mp
+           if(MODELNAME.EQ.'NCAR' .OR. MODELNAME.EQ.'RAPR') IFINCR = NINT(PREC_ACC_DT)/60
+            ID(18)     = 0
+            ID(19)     = IFHR
+            IF(IFMIN .GE. 1)ID(19)=IFHR*60+IFMIN
+            ID(20)     = 4
+            IF (IFINCR.EQ.0) THEN
+             ID(18) = IFHR-ITPREC
+            ELSE
+             ID(18) = IFHR-IFINCR
+             IF(IFMIN .GE. 1)ID(18)=IFHR*60+IFMIN-IFINCR
+            ENDIF
+            IF (ID(18).LT.0) ID(18) = 0
+      print*,'maxval AFWA RAIN HOURLY: ', maxval(GRID1)
+            if(grib=='grib1') then
+              CALL GRIBIT(IGET(932),LVLS(1,IGET(932)),GRID1,IM,JM)
+            elseif(grib=='grib2') then
+              cfld=cfld+1
+              fld_info(cfld)%ifld=IAVBLFLD(IGET(932))
+              if(ITPREC>0) then
+               !fld_info(cfld)%ntrange=(IFHR-ID(18))/ITPREC
+                fld_info(cfld)%ntrange=1
+              else
+                fld_info(cfld)%ntrange=0
+              endif
+             !fld_info(cfld)%tinvstat=ITPREC
+              fld_info(cfld)%tinvstat=IFINCR
+              datapd(1:im,1:jend-jsta+1,cfld)=GRID1(1:im,jsta:jend)
+            endif
+         ENDIF
+
+! KRF: Add AFWA_ICE_HRLY from ncar ensemble wrf output.
+        IF (IGET(933).GT.0.) THEN
+            DO J=JSTA,JEND
+            DO I=1,IM
+              IF (IFHR .EQ. 0) THEN
+                GRID1(I,J)=0.0
+              ELSE
+                 GRID1(I,J)=AFWA_ICE_HRLY(I,J)
+             ENDIF
+            ENDDO
+            ENDDO
+            ID(1:25) = 0
+            ITPREC     = NINT(TPREC)
+!mp
+            if (ITPREC .ne. 0) then
+             IFINCR     = MOD(IFHR,ITPREC)
+             IF(IFMIN .GE. 1)IFINCR= MOD(IFHR*60+IFMIN,ITPREC*60)
+            else
+             IFINCR     = 0
+            endif
+!mp
+           if(MODELNAME.EQ.'NCAR' .OR. MODELNAME.EQ.'RAPR') IFINCR = NINT(PREC_ACC_DT)/60
+            ID(18)     = 0
+            ID(19)     = IFHR
+            IF(IFMIN .GE. 1)ID(19)=IFHR*60+IFMIN
+            ID(20)     = 4
+            IF (IFINCR.EQ.0) THEN
+             ID(18) = IFHR-ITPREC
+            ELSE
+             ID(18) = IFHR-IFINCR
+             IF(IFMIN .GE. 1)ID(18)=IFHR*60+IFMIN-IFINCR
+            ENDIF
+            IF (ID(18).LT.0) ID(18) = 0
+      print*,'maxval AFWA ICE HOURLY: ', maxval(GRID1)
+            if(grib=='grib1') then
+              CALL GRIBIT(IGET(933),LVLS(1,IGET(933)),GRID1,IM,JM)
+            elseif(grib=='grib2') then
+              cfld=cfld+1
+              fld_info(cfld)%ifld=IAVBLFLD(IGET(933))
+              if(ITPREC>0) then
+               !fld_info(cfld)%ntrange=(IFHR-ID(18))/ITPREC
+                fld_info(cfld)%ntrange=1
+              else
+                fld_info(cfld)%ntrange=0
+              endif
+             !fld_info(cfld)%tinvstat=ITPREC
+              fld_info(cfld)%tinvstat=IFINCR
+              datapd(1:im,1:jend-jsta+1,cfld)=GRID1(1:im,jsta:jend)
+            endif
+         ENDIF
+
+! KRF: Add AFWA_FZRA_HRLY from ncar ensemble wrf output.
+        IF (IGET(934).GT.0.) THEN
+            DO J=JSTA,JEND
+            DO I=1,IM
+              IF (IFHR .EQ. 0) THEN
+                GRID1(I,J)=0.0
+              ELSE
+                 GRID1(I,J)=AFWA_FZRA_HRLY(I,J)
+             ENDIF
+            ENDDO
+            ENDDO
+            ID(1:25) = 0
+            ITPREC     = NINT(TPREC)
+!mp
+            if (ITPREC .ne. 0) then
+             IFINCR     = MOD(IFHR,ITPREC)
+             IF(IFMIN .GE. 1)IFINCR= MOD(IFHR*60+IFMIN,ITPREC*60)
+            else
+             IFINCR     = 0
+            endif
+!mp
+           if(MODELNAME.EQ.'NCAR' .OR. MODELNAME.EQ.'RAPR') IFINCR = NINT(PREC_ACC_DT)/60
+            ID(18)     = 0
+            ID(19)     = IFHR
+            IF(IFMIN .GE. 1)ID(19)=IFHR*60+IFMIN
+            ID(20)     = 4
+            IF (IFINCR.EQ.0) THEN
+             ID(18) = IFHR-ITPREC
+            ELSE
+             ID(18) = IFHR-IFINCR
+             IF(IFMIN .GE. 1)ID(18)=IFHR*60+IFMIN-IFINCR
+            ENDIF
+            IF (ID(18).LT.0) ID(18) = 0
+      print*,'maxval AFWA FZRA HOURLY: ', maxval(GRID1)
+            if(grib=='grib1') then
+              CALL GRIBIT(IGET(934),LVLS(1,IGET(934)),GRID1,IM,JM)
+            elseif(grib=='grib2') then
+              cfld=cfld+1
+              fld_info(cfld)%ifld=IAVBLFLD(IGET(934))
+              if(ITPREC>0) then
+               !fld_info(cfld)%ntrange=(IFHR-ID(18))/ITPREC
+                fld_info(cfld)%ntrange=1
+              else
+                fld_info(cfld)%ntrange=0
+              endif
+             !fld_info(cfld)%tinvstat=ITPREC
+              fld_info(cfld)%tinvstat=IFINCR
+              datapd(1:im,1:jend-jsta+1,cfld)=GRID1(1:im,jsta:jend)
+            endif
+         ENDIF
+
+
 
 !
 !     INSTANTANEOUS CONVECTIVE PRECIPITATION RATE.

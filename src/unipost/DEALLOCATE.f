@@ -484,6 +484,9 @@
       deallocate(acswdnt)
 
       deallocate(AFWA_SNOWFALL_HRLY)
+      deallocate(AFWA_RAIN_HRLY)
+      deallocate(AFWA_FZRA_HRLY)
+      deallocate(AFWA_ICE_HRLY)
       deallocate(HAILCAST_DIAM_STD)
       deallocate(HAILCAST_DIAM_MEAN)
       deallocate(HAILCAST_DIAM_MAX)

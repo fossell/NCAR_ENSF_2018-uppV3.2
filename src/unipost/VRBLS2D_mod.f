@@ -53,6 +53,9 @@
       ,TAOD5502D(:,:),AERASY2D(:,:),AERSSA2D(:,:)                            &
 ! afwa hourly snow
       ,AFWA_SNOWFALL_HRLY(:,:) &
+      ,AFWA_RAIN_HRLY(:,:) &
+      ,AFWA_FZRA_HRLY(:,:) &
+      ,AFWA_ICE_HRLY(:,:) &
 !G.Thompson hail
       ,HAIL_MAXK1(:,:),HAIL_MAX2D(:,:) &
 ! afwa hailcast
