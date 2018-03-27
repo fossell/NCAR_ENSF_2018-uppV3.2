@@ -720,11 +720,11 @@
              endif
           END IF
 
-!---  Min Updraft Helicity 0-2 km
+!---  Min Updraft Helicity 0-3 km
           IF((IGET(791).GT.0) )THEN
              DO J=JSTA,JEND
              DO I=1,IM
-               GRID1(I,J)=UP_HELI_MIN02(I,J)
+               GRID1(I,J)=UP_HELI_MIN03(I,J)
              ENDDO
              ENDDO
              ID(1:25)=0
