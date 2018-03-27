@@ -49,8 +49,11 @@
               qqnwfa,qqnifa
       use vrbls2d, only: tmax, qrmax, htop, hbot, cuppt, fis, cfrach, cfracl,      &
               sr, cfrach, cfracm, wspd10max, w_up_max, w_dn_max, w_mean, refd_max, &
-              up_heli_max, up_heli_max16, grpl_max, up_heli, up_heli16, ltg1_max,  &
-              ltg2_max, ltg3_max, nci_ltg, nca_ltg, nci_wq, nca_wq, nci_refd,      &
+              up_heli_max, up_heli_max16, grpl_max, up_heli, up_heli16,            &
+              up_heli_min,up_heli_min16,up_heli_max02,up_heli_min02,               &
+              up_heli_max03,up_heli_min03,rel_vort_max,rel_vort_max01,             &
+              wspd10umax,wspd10vmax,refdm10c_max,                                  &
+              ltg1_max,ltg2_max, ltg3_max, nci_ltg, nca_ltg, nci_wq, nca_wq, nci_refd,&
               u10, v10, th10, q10, tshltr, mrshltr,                                &
               nca_refd, qv2m, qshltr, smstav, smstot, ssroff, bgroff, sfcevp,      &
               sfcexc, vegfrc, acsnow, cmc, sst, thz0, qz0, uz0, vz0, qs, qvg,      &
@@ -66,7 +69,7 @@
               ivgtyp, isltyp, islope, pblh, pblhgust, f,                           &
               QVl1,REFC_10CM,REF1KM_10CM,REF4KM_10CM,                              &
               SWRADmean,U10mean,V10mean,SPDUV10mean,SWNORMmean,SNFDEN,SNDEPAC,     &
-              hbotd,hbots,UP_HELI_MIN, AFWA_SNOWFALL_HRLY, HAILCAST_DIAM_STD,      &
+              hbotd,hbots,AFWA_SNOWFALL_HRLY, HAILCAST_DIAM_STD,                   &
               HAILCAST_DIAM_MEAN,HAILCAST_DIAM_MAX, HAIL_MAXK1, HAIL_MAX2D,        &
               AFWA_RAIN_HRLY, AFWA_ICE_HRLY, AFWA_FZRA_HRLY
       use soil, only: smc, sh2o, stc, sldpth, sllevel
@@ -1406,6 +1409,16 @@ endif  ! 1==2
        end do
 !       print*,'REFD_MAX at ',ii,jj,' = ',REFD_MAX(ii,jj)
 
+      VarName='REFDM10C_MAX'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            REFDM10C_MAX ( i, j ) = dummy ( i, j )
+        end do
+       end do
+!       print*,'REFDM10C_MAX at ',ii,jj,' = ',REFDM10C_MAX(ii,jj)
+
       VarName='UP_HELI_MAX'
       call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
         IM,1,JM,1,IM,JS,JE,1)
@@ -1435,6 +1448,77 @@ endif  ! 1==2
         end do
        end do
 !       print*,'UP_HELI_MIN at ',ii,jj,' = ',UP_HELI_MIN(ii,jj)
+
+      VarName='UP_HELI_MIN16'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            UP_HELI_MIN16 ( i, j ) = dummy ( i, j )
+        end do
+       end do
+!       print*,'UP_HELI_MIN16 at ',ii,jj,' = ',UP_HELI_MIN16(ii,jj)
+
+      VarName='UP_HELI_MAX02'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            UP_HELI_MAX02 ( i, j ) = dummy ( i, j )
+        end do
+       end do
+!       print*,'UP_HELI_MAX02 at ',ii,jj,' = ',UP_HELI_MAX02(ii,jj)
+
+      VarName='UP_HELI_MIN02'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            UP_HELI_MIN02 ( i, j ) = dummy ( i, j )
+        end do
+       end do
+!       print*,'UP_HELI_MIN02 at ',ii,jj,' = ',UP_HELI_MIN02(ii,jj)
+
+      VarName='UP_HELI_MAX03'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            UP_HELI_MAX03 ( i, j ) = dummy ( i, j )
+        end do
+       end do
+!       print*,'UP_HELI_MAX03 at ',ii,jj,' = ',UP_HELI_MAX03(ii,jj)
+
+      VarName='UP_HELI_MIN03'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            UP_HELI_MIN03 ( i, j ) = dummy ( i, j )
+        end do
+       end do
+!       print*,'UP_HELI_MIN03 at ',ii,jj,' = ',UP_HELI_MIN03(ii,jj)
+
+      VarName='REL_VORT_MAX'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            REL_VORT_MAX ( i, j ) = dummy ( i, j )
+        end do
+       end do
+!       print*,'REL_VORT_MAX at ',ii,jj,' = ',REL_VORT_MAX(ii,jj)
+
+      VarName='REL_VORT_MAX01'
+      call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
+        IM,1,JM,1,IM,JS,JE,1)
+       do j = jsta_2l, jend_2u
+        do i = 1, im
+            REL_VORT_MAX01 ( i, j ) = dummy ( i, j )
+        end do
+       end do
+!       print*,'REL_VORT_MAX01 at ',ii,jj,' = ',REL_VORT_MAX01(ii,jj)
+
 
       VarName='GRPL_MAX'
       call getVariable(fileName,DateStr,DataHandle,VarName,DUMMY,        &
