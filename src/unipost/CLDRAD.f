@@ -3740,7 +3740,7 @@ snow_check:   IF (QQS(I,J,L)>=QCLDmin) THEN
       ENDIF
 
 ! Instantaneous clear-sky SWDDNI
-      IF (IGET(785).GT.0) THEN
+      IF (IGET(796).GT.0) THEN
         DO J=JSTA,JEND
           DO I=1,IM
             GRID1(I,J) = SWDDNIC(I,J)
@@ -3749,11 +3749,11 @@ snow_check:   IF (QQS(I,J,L)>=QCLDmin) THEN
         if(grib=='grib1') then
           ID(1:25) = 0
           ID(02)= 130
-          CALL GRIBIT(IGET(785),LVLS(1,IGET(785)),            &
+          CALL GRIBIT(IGET(796),LVLS(1,IGET(796)),            &
               GRID1,IM,JM)
         elseif(grib=='grib2') then
           cfld=cfld+1
-          fld_info(cfld)%ifld=IAVBLFLD(IGET(785))
+          fld_info(cfld)%ifld=IAVBLFLD(IGET(796))
           datapd(1:im,1:jend-jsta+1,cfld)=GRID1(1:im,jsta:jend)
         endif
       ENDIF
@@ -3779,7 +3779,7 @@ snow_check:   IF (QQS(I,J,L)>=QCLDmin) THEN
       ENDIF
 
 ! Instantaneous clear-sky SWDDIF
-      IF (IGET(786).GT.0) THEN
+      IF (IGET(797).GT.0) THEN
         DO J=JSTA,JEND
           DO I=1,IM
             GRID1(I,J) = SWDDIFC(I,J)
@@ -3788,11 +3788,11 @@ snow_check:   IF (QQS(I,J,L)>=QCLDmin) THEN
         if(grib=='grib1') then
           ID(1:25) = 0
           ID(02)= 130
-          CALL GRIBIT(IGET(786),LVLS(1,IGET(786)),            &
+          CALL GRIBIT(IGET(797),LVLS(1,IGET(797)),            &
              GRID1,IM,JM)
         elseif(grib=='grib2') then
           cfld=cfld+1
-          fld_info(cfld)%ifld=IAVBLFLD(IGET(786))
+          fld_info(cfld)%ifld=IAVBLFLD(IGET(797))
           datapd(1:im,1:jend-jsta+1,cfld)=GRID1(1:im,jsta:jend)
         endif
       ENDIF
